@@ -1,0 +1,131 @@
+body {
+            background-color: black;
+            display: flex;
+            justify-content: flex-end;
+            align-content: center;
+            align-items: center;
+          }
+          
+          
+          #container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+          
+          h1 {
+            user-select: none;
+            padding: 5px;
+          }
+          
+          .text-effect {
+            overflow: hidden;
+            position: relative;
+            
+            // adds warped filter to text gradient and shimmer
+            filter: contrast(450%) brightness(430%);
+          }
+          
+          .header-text {
+            position: relative;
+            letter-spacing: 3px;
+            
+            // sticks out on non-black backgrounds
+            background: black;
+            
+            /* html is only to give the right width, data-text is the actual text and it's color is transparent to see background gradient behind it */
+            color: transparent;
+            
+            &::before,
+            &::after {
+              // data-text attr value is the actual text
+              content: attr(data-text);
+              
+              // make white so gradient sticks out most
+              // #aaa will only show shimmered regions
+              color: #fff;
+              
+              // And blur them to create the shimmer effect with the blend-mode below to accurately target the edges of text
+              filter: blur(0.035em);
+              
+              position: absolute;
+              // center inside padding
+              top: 5px; left: 5px;
+              pointer-events: none;
+            }
+            
+            // Set the top transparent text to difference so it blacks out middle fill of displayed text
+            &::after {
+              mix-blend-mode: difference;
+            }
+          }
+          
+          .gradient,
+          .shimmer {
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            pointer-events: none;
+            z-index: 10;  
+          }
+          
+          
+          .gradient {
+            // Multiply mode will paint only the white text
+            mix-blend-mode: multiply;
+            filter: blur(3.4em);
+            
+            &, 
+            &:after {
+              display: block;
+                        content: "";
+                        width: 1100px; height: 200px;
+                        background: #7e0fff;
+                        background: -moz-linear-gradient(-45deg, #7e0fff 0%, #0fffc1 25%, #0fffc1 40%, #0fffc1 60%, #7e0fff 75%, #7e0fff 100%);
+                        background: -o-linear-gradient(-45deg, #7e0fff 0%, #0fffc1 25%, #0fffc1 40%, #0fffc1 60%, #7e0fff 75%, #7e0fff 100%);
+                        background: -ms-linear-gradient(-45deg, #7e0fff 0%, #0fffc1 25%, #0fffc1 40%, #0fffc1 60%, #7e0fff 75%, #7e0fff 100%);
+              background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#7e0fff), color-stop(25%,#0fffc1), color-stop(40%,#0fffc1), color-stop(60%,#0fffc1), color-stop(75%,#7e0fff), color-stop(100%,#7e0fff));
+                        background: -webkit-linear-gradient(-45deg, #7e0fff 0%, #0fffc1 25%, #0fffc1 40%, #0fffc1 60%, #7e0fff 75%, #7e0fff 100%);
+                        background: linear-gradient(-45deg, #7e0fff 0%, #0fffc1 25%, #0fffc1 40%, #0fffc1 60%, #7e0fff 75%, #7e0fff 100%);
+            }
+            
+            animation: 7.5s gradAnim linear infinite;
+            
+            @keyframes gradAnim {
+                        0% {transform: translateX(0px) ;}
+                        100% {transform: translateX(-1050px) ;}
+            }
+            
+            &:after {
+                        transform: translateX(1050px);
+            }
+          }
+          
+          
+          .shimmer {
+            animation: light 12s infinite linear;
+            
+            // Shimmer Lights (color-dodge needs a black bg so the lights don't stick out)
+            background: 
+              radial-gradient(circle, white, transparent 25%) 0 0 / 25% 25%, 
+              radial-gradient(circle, white, black 25%) 50% 50% / 12.5% 12.5%;
+            top: -100%; left: -100%;
+            
+            filter: blur(12px);
+            
+            // blends the background shimmer lights with the text
+            mix-blend-mode: color-dodge;
+          }
+          
+          @keyframes light {
+            100% {
+              transform: translate3d(50%, 50%, 0);
+            }
+          }
+          
+          .header-text {
+            font: 900 200px 'Audiowide', cursive;
+            line-height: 200px;
+            text-align: center;
+            margin: 0;
+          }
